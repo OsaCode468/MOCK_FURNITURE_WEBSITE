@@ -1,0 +1,20 @@
+require('dotenv').config()
+const cors = require('cors')
+
+const mongoose = require('mongoose')
+const express = require('express')
+const app = express()
+app.use(cors())
+const furnitureRoutes = require('./routes/furniture')
+app.use(express.json())
+app.use('/api/furniture', furnitureRoutes)
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+mongoose.connect(process.env.MONG_URI)
+.then(()=>console.log("Connected to MongoDB"))
+.catch((err)=>console.log(err))
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to the furniture  fullstack application.' })
+})
+app.listen(process.env.PORT, () => console.log('Server running on port 4000'))
