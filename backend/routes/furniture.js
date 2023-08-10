@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Furniture = require('../models/furnitureModel')
 const mongoose = require('mongoose')
+// const requireAuth = require('../middleware/authorization')
+// router.use(requireAuth)
 router.get('/', async (req, res) => {
     try {
         const furnitures = await Furniture.find({}).sort({createdAt:-1})
@@ -12,6 +14,7 @@ router.get('/', async (req, res) => {
 })
 router.get('/:id', async (req, res) => {
     const id = req.params.id
+    console.log(id)
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({message:"Furniture not found"})
     }
@@ -22,9 +25,9 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(furniture)
 })
 router.post('/', async (req, res) => {
-    const {name, price} = req.body
+    const {name, price, image, description} = req.body
     try{
-        const furniture = await Furniture.create({name, price})
+        const furniture = await Furniture.create({name, price, image, description})
         res.status(200).json({message:"Furniture created"})
     }
     catch(error){
